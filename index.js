@@ -115,6 +115,9 @@ document.querySelector("#submit").addEventListener("click", () => {
 
   // data setting on local storage and getting data from local storage
   let storage = JSON.parse(localStorage.getItem("results"));
+  console.log(storage);
+  const submitButtonContainer = document.getElementById('submitButtonContainer')
+ 
   if (storage) {
     localStorage.setItem(
       "results",
@@ -127,6 +130,7 @@ document.querySelector("#submit").addEventListener("click", () => {
         },
       ])
     );
+    submitButtonContainer.classList.add("hidden");
   } else {
     localStorage.setItem(
       "results",
@@ -138,8 +142,10 @@ document.querySelector("#submit").addEventListener("click", () => {
         },
       ])
     );
+    submitButtonContainer.classList.remove("hidden");
   }
-
+  // console.log(storage)
+  
   // Right side bar/ answer section
   let x = setTimeout(() => {
     showAnswers(answers);
