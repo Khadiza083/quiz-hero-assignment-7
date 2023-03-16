@@ -9,7 +9,7 @@ let startQuiz = document.querySelector("#startQuiz");
 let rulesContainer = document.querySelector("#rulesContainer");
 let alertContainer = document.querySelector("#alertContainer");
 let submitContainer = document.querySelector("#submitContainer");
-let quizContainer = document.querySelector(".quizContainer");
+let quizContainer = document.querySelector("#quizContainer");
 let answersContainer = document.querySelector("#answersContainer");
 let displayResult = document.querySelector("#displayResult");
 
@@ -45,7 +45,7 @@ startQuiz.addEventListener("click", () => {
 
 // All quiz data fetched from json
 const loadQuiz = async () => {
-  fetch("data/quiz.json")
+  fetch("./data/quiz.json")
     .then(response => response.json())
     .then(data => {
       quizData = data;
@@ -53,10 +53,8 @@ const loadQuiz = async () => {
     })
 
 };
-loadQuiz()
 // Displaying quiz on quiz page
 const displayQuiz = (data) => {
-  console.log(data);
   if (!data) {
     quizContainer.innerHTML = "";
     return;
@@ -80,10 +78,12 @@ const displayQuiz = (data) => {
 
 // EventListener for quiz submit button
 document.querySelector("#submit").addEventListener("click", () => {
+  console.log(answers);
+  console.log(answers.length);
   if (answers.length < 6) {
     return;
   }
-  quizTimer(true);
+  // quizTimer(true);
   answersContainer.innerHTML = `<div class="my-4">
   <i class="fa-solid fa-fan animate-spin text-2xl text-green-600"></i>
   <p class="text-xs animate-pulse">Please Wait, We are checking...</p>
@@ -92,7 +92,7 @@ document.querySelector("#submit").addEventListener("click", () => {
   let totalMark = 0;
   let grade = {
     status: "",
-    color: "",
+    color: ""
   };
 
   for (let ans of answers) {
@@ -100,7 +100,7 @@ document.querySelector("#submit").addEventListener("click", () => {
       totalMark += 10;
     }
   }
-
+// console.log(totalMark);
   if (totalMark === 60) {
     grade.status = "Excellent";
     grade.color = "text-green-600";
@@ -111,9 +111,10 @@ document.querySelector("#submit").addEventListener("click", () => {
     grade.status = "Poor";
     grade.color = "text-red-600";
   }
+  quizTimer(true)
 
   // data setting on local storage and getting data from local storage
-  let storage = JSON.parse(localStorage.getItem("result"));
+  let storage = JSON.parse(localStorage.getItem("results"));
   if (storage) {
     localStorage.setItem(
       "results",
@@ -142,7 +143,7 @@ document.querySelector("#submit").addEventListener("click", () => {
   // Right side bar/ answer section
   let x = setTimeout(() => {
     showAnswers(answers);
-    displayResult.innerHTML = `<div
+    answersContainer.innerHTML = `<div
     class="h-[220px] w-[220px] mx-auto mt-8 flex flex-col justify-center border-2 rounded-tr-[50%] rounded-bl-[50%]"
   >
     <h3 class="text-xl ${grade.color}">${grade.status}</h3>
